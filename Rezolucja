@@ -1,0 +1,116 @@
+import sys
+var = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'
+cons = var[:9].lower()
+neg = ['~', 'NOT', '¬']
+kon = ['AND', '^', '&']
+dys = ['OR', '∨']
+def negacja(literal):
+    if literal[0] in neg:
+        return literal[1::]
+    else:
+        return '¬'+literal
+def wczytywanie():
+    lista = []
+    x = None
+    parametr = 0
+    print('Podaj formułę, aby zakończyć wprowadź "12" \n')
+    while x != '12':
+        temp = []
+        x = input()
+        if x == '12':
+            continue
+        else:
+            if parametr == 0:
+                x = x.split(' ')
+                for a in x:
+                    ia = x.index(a)
+                    if parametr == 1:
+                        temp.append(negacja(a))
+                        del(x[ia])
+                        parametr = 0
+                    if parametr == 0:
+                        if a in kon:
+                            continue
+                        elif a in neg:
+                            parametr +=1
+                            continue
+                        elif x[ia-1] not in neg:
+                            temp.append(a)
+                lista.append(temp)
+    return lista
+
+zbior = wczytywanie()
+while True:
+    operacje_e = 0
+    ind_az = 0      #indeksy elementów na których operuję
+    do_usuniecia = []
+    aktualizacja = []
+    for elementy in zbior:
+        licznik = 0
+        if not elementy:
+            continue
+        else:
+            aktualizacja.append(elementy)
+    zbior = aktualizacja
+    zbior.append(1)
+    if zbior[0] == 1:
+        print('NIESPEŁNIALNA')
+        sys.exit(0)
+    else:
+        del(zbior[-1])
+    for az in zbior:
+        ind_bz = 0
+        for bz in az:
+            ind_saz = 0             #sprawdzanie każdego elementu z każdym czy istnieją dwa literały ko plementarne
+            for scn_az in zbior:
+                ind_sbz = 0
+                for scn_bz in scn_az:
+
+                    if bz[-2] != scn_bz[-2]:
+                        #uzgadnianie
+
+                        if bz[-2]in cons:
+                            zbior[ind_saz][ind_sbz] = scn_bz[:-2]+bz[-2]+')'
+                        elif scn_bz[-2] in cons:
+                            zbior[ind_az][ind_bz] = bz[:-2]+scn_bz[-2]+')'
+                        else:
+                            zbior[ind_saz][ind_sbz] = scn_bz[:-2] + bz[-2] + ')'
+
+
+                    else:
+                        tempor = []
+                        tempor2 = []
+                        tempor3 = []
+                        if bz == negacja(scn_bz):
+                                        #jeżeli istnieją dwa literały komplementarne - zapisz ich indeksy aby je usunąć
+                            tempor.append(ind_az)
+                            tempor.append(ind_bz)
+                            tempor2.append(ind_saz)
+                            tempor2.append(ind_sbz)
+                            tempor3.append(tempor)
+                            tempor3.append(tempor2)
+                            do_usuniecia.append(tempor3)
+
+
+                            operacje_e+=1
+
+
+                    ind_sbz+=1
+                ind_saz+=1
+            ind_bz+=1
+        ind_az +=1
+
+    for du in do_usuniecia:
+        try:
+            del (zbior[du[1][0]][du[1][1]])
+        except:
+            idk = 'a'
+        try:
+            del (zbior[du[0][0]][du[0][1]])
+        except:
+            continue
+
+    if operacje_e == 0:
+        print('SPEŁNIALNY')
+        sys.exit(0)
+
