@@ -40,10 +40,12 @@ def wczytywanie():
     return lista
 
 zbior = wczytywanie()
+print(zbior)
 while True:
     operacje_e = 0
     ind_az = 0      #indeksy elementów na których operuję
     do_usuniecia = []
+    print('poczatek petli: ', zbior)
     aktualizacja = []
     for elementy in zbior:
         licznik = 0
@@ -65,19 +67,24 @@ while True:
             for scn_az in zbior:
                 ind_sbz = 0
                 for scn_bz in scn_az:
-
+                    indeksy = [ind_az, ind_bz, ind_saz, ind_sbz]
                     if bz[-2] != scn_bz[-2]:
                         #uzgadnianie
+                        print(bz, scn_bz)
 
-                        if bz[-2]in cons:
-                            zbior[ind_saz][ind_sbz] = scn_bz[:-2]+bz[-2]+')'
+                        if (bz[-2]in cons) and (scn_bz[-2] != bz[-2]):
+
+                            scn_bz = scn_bz[:-2]+bz[-2]+')'
+
                         elif scn_bz[-2] in cons:
-                            zbior[ind_az][ind_bz] = bz[:-2]+scn_bz[-2]+')'
+                            bz = bz[:-2]+scn_bz[-2]+')'
                         else:
-                            zbior[ind_saz][ind_sbz] = scn_bz[:-2] + bz[-2] + ')'
+                            scn_bz = scn_bz[:-2]+bz[-2]+')'
+                            print('3')
+                        print('uzgodnione: ', bz, scn_bz)
 
 
-                    else:
+                    if bz[-2] == scn_bz[-2]:
                         tempor = []
                         tempor2 = []
                         tempor3 = []
@@ -90,7 +97,7 @@ while True:
                             tempor3.append(tempor)
                             tempor3.append(tempor2)
                             do_usuniecia.append(tempor3)
-
+                            print('usuwane:', bz, scn_bz)
 
                             operacje_e+=1
 
@@ -99,16 +106,24 @@ while True:
                 ind_saz+=1
             ind_bz+=1
         ind_az +=1
+    print(do_usuniecia)
 
     for du in do_usuniecia:
-        try:
-            del (zbior[du[1][0]][du[1][1]])
-        except:
-            idk = 'a'
-        try:
-            del (zbior[du[0][0]][du[0][1]])
-        except:
-            continue
+        if du[1][0] == du[0][0]:
+            try:
+                del(zbior[du[0][0]][du[0][1]])
+                del(zbior[du[0][0]][du[0][1]])
+            except:
+                continue
+        else:
+            try:
+                del(zbior[du[1][0]][du[1][1]])
+            except:
+                idk = 'asd'
+            try:
+                del(zbior[du[0][0]][du[0][1]])
+            except:
+                continue
 
     if operacje_e == 0:
         print('SPEŁNIALNY')
