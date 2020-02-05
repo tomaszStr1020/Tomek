@@ -40,12 +40,10 @@ def wczytywanie():
     return lista
 
 zbior = wczytywanie()
-print(zbior)
 while True:
     operacje_e = 0
     ind_az = 0      #indeksy elementów na których operuję
     do_usuniecia = []
-    print('poczatek petli: ', zbior)
     aktualizacja = []
     for elementy in zbior:
         licznik = 0
@@ -70,7 +68,6 @@ while True:
                     indeksy = [ind_az, ind_bz, ind_saz, ind_sbz]
                     if bz[-2] != scn_bz[-2]:
                         #uzgadnianie
-                        print(bz, scn_bz)
 
                         if (bz[-2]in cons) and (scn_bz[-2] != bz[-2]):
 
@@ -80,8 +77,6 @@ while True:
                             bz = bz[:-2]+scn_bz[-2]+')'
                         else:
                             scn_bz = scn_bz[:-2]+bz[-2]+')'
-                            print('3')
-                        print('uzgodnione: ', bz, scn_bz)
 
 
                     if bz[-2] == scn_bz[-2]:
@@ -97,7 +92,6 @@ while True:
                             tempor3.append(tempor)
                             tempor3.append(tempor2)
                             do_usuniecia.append(tempor3)
-                            print('usuwane:', bz, scn_bz)
 
                             operacje_e+=1
 
@@ -106,7 +100,6 @@ while True:
                 ind_saz+=1
             ind_bz+=1
         ind_az +=1
-    print(do_usuniecia)
 
     for du in do_usuniecia:
         if du[1][0] == du[0][0]:
